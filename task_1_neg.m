@@ -6,6 +6,7 @@ neg_stim.Properties.VariableNames{'Var3'}='x';
 neg_stim.Properties.VariableNames{'Var4'}='y';
 
 %defining matrices for the velocities and accelerations
+pos_mat = [];
 vel_mat = [];
 acc_mat = [];
 
@@ -13,6 +14,7 @@ acc_mat = [];
 for n = 0:49
     
     fish_pos = [neg_stim.x((50*n)+(n+1):(50*n)+(n+50)) neg_stim.y((50*n)+(n+1):(50*n)+(n+50))]; %defines position vector
+    pos_mat = [pos_mat fish_pos];
     
     %defines the initial velocities and accelerations
     fish_vel = [0 0]; 
@@ -34,6 +36,23 @@ for n = 0:49
     vel_mat = [vel_mat fish_vel];
     acc_mat = [acc_mat fish_acc];
 end
+
+acc_min_x = min(min(mean(acc_mat(:,1:2:end),2)));
+[x,y] = find(mean(acc_mat(:,1:2:end),2) == acc_min_x);
+
+acc_min_y = min(min(mean(acc_mat(:,2:2:end),2)));
+[p,q] = find(mean(acc_mat(:,2:2:end),2) == acc_min_y);
+
+mean(pos_mat(x,1:2:end),2)
+mean(pos_mat(p,2:2:end),2)
+
+
+
+mean(acc_mat(:,1:2:end),2);
+
+
+% maximum = max(max(A)); 
+% [x,y]=find(A==maximum)
 
 %plot(neg_stim.Frame(1:50),mean(vel_mat(:,1:2:end),2),neg_stim.Frame(1:50),mean(vel_mat(:,2:2:end),2));
 plot(neg_stim.Frame(1:50),mean(acc_mat(:,1:2:end),2),neg_stim.Frame(1:50),mean(acc_mat(:,2:2:end),2));
